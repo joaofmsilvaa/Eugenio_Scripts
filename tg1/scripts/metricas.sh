@@ -15,8 +15,8 @@ wordsQuotient=$(echo "scale=2; $totalWords/$uniqueWords" | bc);
 
 echo "Quotient (total words / unique words):	$wordsQuotient";
 
-totalPhrases=$(tr -s '!.?' '\n' < $FILEPATH | wc -l | cut -d' ' -f1);
-uniquePhrases=$(tr -s '!.?' '\n' < $FILEPATH | sort -u | wc -l | cut -d' ' -f1);
+totalPhrases=$(tr -s '.' < $FILEPATH | wc -l | cut -d' ' -f1);
+uniquePhrases=$(tr -s '.' < $FILEPATH | sort -u | wc -l | cut -d' ' -f1);
 
 echo "Phrases:	$totalPhrases";
 echo "Unique phrases:	$uniquePhrases";

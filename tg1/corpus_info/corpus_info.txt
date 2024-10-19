@@ -3,6 +3,6 @@ Empty lines:	0
 Words:	1979599
 Unique words:	539532
 Quotient (total words / unique words):	3.66
-Phrases:	312220
-Unique phrases:	307208
-Quotient (total phrases / unique phrases):	1.01
+Phrases:	299994
+Unique phrases:	299994
+Quotient (total phrases / unique phrases):	1.00
