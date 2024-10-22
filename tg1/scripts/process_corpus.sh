@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INPUT_FILE="/home/joao_calado/Documents/so/tg1/deu_mixed-typical_2011_300K/deu_mixed-typical_2011_300K-sentences.txt"
+INPUT_FILE="../deu_mixed-typical_2011_300K-sentences.txt"
 
 OUTPUT_DIR="../corpus_txt"
 

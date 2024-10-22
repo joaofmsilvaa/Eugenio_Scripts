@@ -1,7 +1,7 @@
 #!/bin/bash
 
-corpus_file="../corpus_txt/corpus_clean.txt"
-output_file="../corpus_txt/words_dict/words_pairs.txt"
+corpus_file="../deu_mixed-typical_2011_300K-sentences.txt"
+output_file="../words_dict/words_pairs.txt"
 
 declare -A word_pairs
 
