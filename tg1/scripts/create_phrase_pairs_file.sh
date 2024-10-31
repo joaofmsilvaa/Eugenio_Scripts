@@ -1,6 +1,7 @@
+#!/bin/bash
+
 CORPUS_FILE="../deu_mixed-typical_2011_300K-sentences.txt"              
-OUTPUT_DIR="../sentences_dict"
-OUTPUT_FILE="$OUTPUT_DIR/sentences_pairs.txt"
+OUTPUT_FILE="../sentences_dict/sentences_pairs.txt"
 
 awk -F'\t' '{print $2}' "$CORPUS_FILE" |
 sed 's/ /|/g' | sort -u |

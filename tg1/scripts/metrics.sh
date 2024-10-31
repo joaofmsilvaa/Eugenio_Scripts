@@ -1,3 +1,5 @@
+#!/bin/bash
+
 exec > ../corpus_info/corpus_info.txt 2>&1
 
 FILEPATH="../deu_mixed-typical_2011_300K-sentences.txt"

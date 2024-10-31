@@ -1,3 +1,4 @@
+#!/bin/bash
 
 CORPUS_FILE="../deu_mixed-typical_2011_300K-sentences.txt"
 OUTPUT_FILE="../sentences_dict/sentences.txt"
