@@ -3,25 +3,14 @@
 CORPUS_FILE="../deu_mixed-typical_2011_300K-sentences.txt"              
 OUTPUT_FILE="../sentences_dict/sentences_pairs.txt"
 
-# Extract lines from "$CORPUS_FILE" that start with a number and a tab, capturing up to the first punctuation mark.
-grep -oP '^\d+\t[^.!?]*[.!?]' "$CORPUS_FILE" |
+grep -oP '^\d+\t[^.!?]*[.!?]' "$CORPUS_FILE" | # Extracts phrases that start with a number and a tab
+sort |                                         # Sorts the phrases alphabetically
+sed 's/ /|/g' |                                # Replaces spaces with vertical bars.
+awk '{print $2}' |                             # Extracts the phrase.
+awk 'NR==1 {prev=$0; next} {print prev "|" $0; prev=$0}' | # Joins the first phrase of the pair with the second.
+sort |                                         # Sorts the pairs.
+uniq -c |                                      # Counts the occurrence of each phrase.
+awk '{print $1 "\t" $2}' > "$OUTPUT_FILE"      # Formats and saves the result at "$OUTPUT_FILE".
 
-# Replace spaces with vertical bars (|) for easier parsing.
-sed 's/ /|/g' |
-
-# Extract the second column (phrases) and save it to a temporary file.
-awk '{print $2}' > /tmp/frases_tmp.txt
-
-# Pair each line with the next line in the file, separated by '|'.
-paste -d'|' /tmp/frases_tmp.txt <(tail -n +2 /tmp/frases_tmp.txt) |
-
-# Sort and count unique pairs.
-sort | uniq -c |
-
-# Format the output with count and phrase pair, saving to "$OUTPUT_FILE".
-awk '{print $1 "\t" $2}' > "$OUTPUT_FILE"
-
-rm /tmp/frases_tmp.txt
-
-echo "Dictionary created in $OUTPUT_FILE"
+echo "Dicionário de palavras criado em $OUTPUT_FILE"
 
