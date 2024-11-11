@@ -1,24 +1,17 @@
 #!/bin/bash
 
-corpus_file="../deu_mixed-typical_2011_300K-sentences.txt"
-output_file="../words_dict/words_pairs.txt"
+CORPUS_FILE="../deu_mixed-typical_2011_300K-sentences.txt"
+OUTPUT_FILE="../words_dict/words_pairs.txt"
 
-declare -A word_pairs
+tr -c '[:alpha:]' '[\n*]' < "$CORPUS_FILE" |  # Replaces non-letter characters with newlines
+tr '[:upper:]' '[:lower:]' |                   # Converts all uppercase letters to lowercase
+awk 'NF' |                                      # Removes empty lines.
+awk 'NR==1 {prev=$0; next} {print prev "|" $0; prev=$0}' | # Joins the first word of the pair with the second.
+sort |                                          # Sorts the pairs alphabetically.
+uniq -c |                                       # Counts the ocurrence.
+sort -k2,2 |                                      # Sorts the lines by the pair.
+awk '{print $1 "\t" $2}' > "$OUTPUT_FILE"
 
-while read -r line; do
-    words=($line)
-    for (( i=0; i<${#words[@]}-1; i++ )); do
-        pair="${words[i]} ${words[i+1]}"
-        if [[ -n "${word_pairs[$pair]}" ]]; then
-            word_pairs[$pair]=$((word_pairs[$pair] + 1))
-        else
-            word_pairs[$pair]=1
-        fi
-    done
-done < "$corpus_file"
+# Notificação de conclusão.
+echo "Word pair count created in $OUTPUT_FILE"
 
-for pair in "${!word_pairs[@]}"; do
-    echo "$pair ${word_pairs[$pair]}"
-done | sort > "$output_file"
-
-echo "Ficheiro de pares de palavras criado em $output_file"
