@@ -12,5 +12,7 @@ uniq -c |                                       # Counts the ocurrence.
 sort -k2,2 |                                      # Sorts the lines by the pair.
 awk '{print $1 "\t" $2}' > "$OUTPUT_FILE"
 
-echo "Dicionário de palavras criado em $OUTPUT_FILE"
+./limit_files.sh $OUTPUT_FILE
+
+echo "O Dicionário foi criado em $OUTPUT_FILE"
 

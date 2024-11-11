@@ -32,8 +32,6 @@ BEGIN {
     word_count += words_in_line
     phrase_count += phrases_in_line
 	
-    print $0 >> output_file
+    print word_count $0 >> output_file
 }
 ' "$INPUT_FILE"
-
-echo "O ficheiro limitado foi criado em $OUTPUT_FILE"

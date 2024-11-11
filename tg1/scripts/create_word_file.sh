@@ -11,4 +11,6 @@ sort | # Sort alphabetically
 uniq -c | # Count the occurrence of each word                             
 sort -k2,2 > "$OUTPUT_FILE" # Sort each line by the word             
 
-echo "Dicionário de palavras criado em $OUTPUT_FILE"
+./limit_files.sh $OUTPUT_FILE
+
+echo "O Dicionário foi criado em $OUTPUT_FILE"
