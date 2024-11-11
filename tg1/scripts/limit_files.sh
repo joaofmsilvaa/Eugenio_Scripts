@@ -2,13 +2,7 @@
 
 INPUT_FILE="$1"
 
-DIR_NAME=$(dirname "$INPUT_FILE")
-BASE_NAME=$(basename "$INPUT_FILE" .txt)
-OUTPUT_FILE="${DIR_NAME}/${BASE_NAME}_limited.txt"
-
-> $OUTPUT_FILE
-
-awk -v max_words="$MAX_WORDS" -v max_phrases="$MAX_PHRASES" -v output_file="$OUTPUT_FILE" '
+awk -v max_words="$MAX_WORDS" -v max_phrases="$MAX_PHRASES" -v output_file="$INPUT_FILE" '
 BEGIN {
     word_count = 0
     phrase_count = 0
@@ -32,6 +26,7 @@ BEGIN {
     word_count += words_in_line
     phrase_count += phrases_in_line
 	
-    print word_count $0 >> output_file
+    print $0 >> output_file
 }
 ' "$INPUT_FILE"
+
