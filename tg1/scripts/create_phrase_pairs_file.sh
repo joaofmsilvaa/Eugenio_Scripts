@@ -10,7 +10,7 @@ awk '{print $2}' |                             # Extracts the phrase.
 awk 'NR==1 {prev=$0; next} {print prev "|" $0; prev=$0}' | # Joins the first phrase of the pair with the second.
 sort |                                         # Sorts the pairs.
 uniq -c |                                      # Counts the occurrence of each phrase.
-awk '{print $1 "\t" $2}' > "$OUTPUT_FILE"      # Formats and saves the result at "$OUTPUT_FILE".
+awk '{print $2 "\t" $1}' > "$OUTPUT_FILE"      # Formats and saves the result at "$OUTPUT_FILE".
 
 ./limit_files.sh $OUTPUT_FILE
 
