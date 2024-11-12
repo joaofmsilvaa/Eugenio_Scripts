@@ -3,8 +3,10 @@
 # Caminhos para os arquivos
 WORDS_FILE="../words_dict/words.txt"
 PAIRS_FILE="../words_dict/words_pairs.txt"
+OUTPUT_FILE="../words_dict/words_pairs_check.txt"
 
-> '../words_dict/words_pairs_check.txt'
+# Limpa o arquivo de saída
+> "$OUTPUT_FILE"
 
 # Verifica se os arquivos existem
 if [[ ! -f "$WORDS_FILE" ]]; then
@@ -13,34 +15,49 @@ if [[ ! -f "$WORDS_FILE" ]]; then
 fi
 
 if [[ ! -f "$PAIRS_FILE" ]]; then
-    echo "Arquivo words_pairs_check.txt não encontrado!"
+    echo "Arquivo words_pairs.txt não encontrado!"
     exit 1
 fi
 
-echo "Arquivos encontrados. Iniciando a verificação..."
+# Processa cada par de palavras no arquivo words_pairs.txt usando awk
+awk -F'|' -v output="$OUTPUT_FILE" -v words_file="$WORDS_FILE" '
+BEGIN {
+    # Lê o arquivo words.txt para dentro de um dicionário
+    while ((getline word < words_file) > 0) {
+        gsub(/^ +| +$/, "", word);  # Remove espaços nas extremidades
+        dict[word] = 1;
+        # Debug: confirma que a palavra foi carregada
+        
+    }
+    close(words_file);
+}
+{
+    # Limpa os espaços nas palavras do par
+    word1 = $1;
+    word2 = $2;
+    gsub(/^ +| +$/, "", word1);
+    gsub(/^ +| +$/, "", word2);
+    
+    # Debug: exibe as palavras lidas do par
+    print "Processando par:", word1, "|", word2 >> output;
 
-# Para cada par de palavras no arquivo words_pairs_check.txt
-while IFS="|" read -r word1 word2; do
-    # Remover espaços extras
-    word1=$(echo "$word1" | xargs)
-    word2=$(echo "$word2" | xargs)
+    # Verifica a presença das palavras e escreve no arquivo de saída
+    if (word1 in dict) {
+        print "Palavra encontrada:", word1 >> output;
+    } else {
+        # Debug: indica que a palavra1 não foi encontrada
+        print "Palavra não encontrada no dicionário:", word1 >> output;
+    }
+    if (word2 in dict) {
+        print "Palavra encontrada:", word2 >> output;
+    } else {
+        # Debug: indica que a palavra2 não foi encontrada
+        print "Palavra não encontrada no dicionário:", word2 >> output;
+    }
+}
+' "$PAIRS_FILE"
 
-    # Remover números antes das palavras no words.txt (caso existam)
-    word1_clean=$(echo "$word1" | awk '{print $NF}')
-    word2_clean=$(echo "$word2" | awk '{print $NF}')
+# Chama o script limit_files.sh
+./limit_files.sh "$OUTPUT_FILE"
 
-    # Verifica se a palavra word1_clean existe em words.txt
-    if grep -qw "$word1_clean" "$WORDS_FILE"; then
-        echo "Palavra encontrada: $word1"
-        >> '../words_dict/words_pairs_check.txt'
-    fi
-
-    # Verifica se a palavra word2_clean existe em words.txt
-    if grep -qw "$word2_clean" "$WORDS_FILE"; then
-        echo "Palavra encontrada: $word2"
-        >> '../words_dict/words_pairs_check.txt'
-    fi
-
-done < "$PAIRS_FILE"
-
-echo "Verificação concluída."
+echo "O Dicionário foi criado em $OUTPUT_FILE"
