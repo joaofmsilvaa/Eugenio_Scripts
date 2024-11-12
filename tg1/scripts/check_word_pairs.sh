@@ -1,22 +1,46 @@
 #!/bin/bash
 
-# Caminho para o arquivo de palavras
-words_file="../words_dict/words.txt"
-# Caminho para o arquivo de saída
-pairs_file="../words_dict/words_pairs.txt"
+# Caminhos para os arquivos
+WORDS_FILE="../words_dict/words.txt"
+PAIRS_FILE="../words_dict/words_pairs.txt"
 
-# Verifica se o arquivo de palavras existe
-if [[ ! -f "$words_file" ]]; then
-  echo "Erro: O arquivo de palavras '$words_file' não existe."
-  exit 1
+> '../words_dict/words_pairs_check.txt'
+
+# Verifica se os arquivos existem
+if [[ ! -f "$WORDS_FILE" ]]; then
+    echo "Arquivo words.txt não encontrado!"
+    exit 1
 fi
 
-# Usando AWK para criar os pares de palavras sem contagem de ocorrências
-awk '{
-  if (prev_word != "") {
-    print prev_word, $0  # Imprime o par de palavras
-  }
-  prev_word = $0
-}' "$words_file" | awk '{print $2, $3}' > "$pairs_file"
+if [[ ! -f "$PAIRS_FILE" ]]; then
+    echo "Arquivo words_pairs_check.txt não encontrado!"
+    exit 1
+fi
 
-echo "Pares de palavras criados em '$pairs_file'."
+echo "Arquivos encontrados. Iniciando a verificação..."
+
+# Para cada par de palavras no arquivo words_pairs_check.txt
+while IFS="|" read -r word1 word2; do
+    # Remover espaços extras
+    word1=$(echo "$word1" | xargs)
+    word2=$(echo "$word2" | xargs)
+
+    # Remover números antes das palavras no words.txt (caso existam)
+    word1_clean=$(echo "$word1" | awk '{print $NF}')
+    word2_clean=$(echo "$word2" | awk '{print $NF}')
+
+    # Verifica se a palavra word1_clean existe em words.txt
+    if grep -qw "$word1_clean" "$WORDS_FILE"; then
+        echo "Palavra encontrada: $word1"
+        >> '../words_dict/words_pairs_check.txt'
+    fi
+
+    # Verifica se a palavra word2_clean existe em words.txt
+    if grep -qw "$word2_clean" "$WORDS_FILE"; then
+        echo "Palavra encontrada: $word2"
+        >> '../words_dict/words_pairs_check.txt'
+    fi
+
+done < "$PAIRS_FILE"
+
+echo "Verificação concluída."
