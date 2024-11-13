@@ -63,6 +63,6 @@ awk '
 ' "$SENTENCES_FILE" "$PAIRS_FILE"
 
 # Call the limit_files.sh script
-./limit_files.sh "$OUTPUT_FILE"
+#./limit_files.sh "$OUTPUT_FILE"
 
 echo "O Dicionário foi criado em $OUTPUT_FILE"
