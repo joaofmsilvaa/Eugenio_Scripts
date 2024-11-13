@@ -22,6 +22,7 @@ awk -F'|' -v output="$OUTPUT_FILE" -v words_file="$WORDS_FILE" '
 BEGIN {
     #Reads the file words.txt into a dictionary
     while ((getline word < words_file) > 0) {
+    	gsub(/\t[0-9]+$/, "", word); 
         gsub(/^ +| +$/, "", word);  # Removes spaces at the ends
         dict[word] = 1;
         
@@ -29,12 +30,14 @@ BEGIN {
     close(words_file);
 }
 {
+    gsub(/\t[0-9]+$/, "", $2);
+
     # Cleans up spaces in pair words
     word1 = $1;
     word2 = $2;
     gsub(/^ +| +$/, "", word1);
     gsub(/^ +| +$/, "", word2);
-    
+
     print "Processando o par:", word1, "|", word2 >> output;
 
     # Checks for the presence of words and writes to the output file
