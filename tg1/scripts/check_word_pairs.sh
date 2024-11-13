@@ -1,22 +1,57 @@
-#!/bin/bash
+# Paths to files
+WORDS_FILE="../words_dict/words.txt"
+PAIRS_FILE="../words_dict/words_pairs.txt"
+OUTPUT_FILE="../words_dict/words_pairs_check.txt"
 
-# Caminho para o arquivo de palavras
-words_file="../words_dict/words.txt"
-# Caminho para o arquivo de saída
-pairs_file="../words_dict/words_pairs.txt"
+# Clean the output file
+> "$OUTPUT_FILE"
 
-# Verifica se o arquivo de palavras existe
-if [[ ! -f "$words_file" ]]; then
-  echo "Erro: O arquivo de palavras '$words_file' não existe."
-  exit 1
+# Check if files exist
+if [[ ! -f "$WORDS_FILE" ]]; then
+    echo "Arquivo words.txt não encontrado!"
+    exit 1
 fi
 
-# Usando AWK para criar os pares de palavras sem contagem de ocorrências
-awk '{
-  if (prev_word != "") {
-    print prev_word, $0  # Imprime o par de palavras
-  }
-  prev_word = $0
-}' "$words_file" | awk '{print $2, $3}' > "$pairs_file"
+if [[ ! -f "$PAIRS_FILE" ]]; then
+    echo "Arquivo words_pairs.txt não encontrado!"
+    exit 1
+fi
 
-echo "Pares de palavras criados em '$pairs_file'."
+# Process each word pair in the file words_pairs.txt
+awk -F'|' -v output="$OUTPUT_FILE" -v words_file="$WORDS_FILE" '
+BEGIN {
+    #Reads the file words.txt into a dictionary
+    while ((getline word < words_file) > 0) {
+        gsub(/^ +| +$/, "", word);  # Removes spaces at the ends
+        dict[word] = 1;
+        
+    }
+    close(words_file);
+}
+{
+    # Cleans up spaces in pair words
+    word1 = $1;
+    word2 = $2;
+    gsub(/^ +| +$/, "", word1);
+    gsub(/^ +| +$/, "", word2);
+    
+    print "Processando o par:", word1, "|", word2 >> output;
+
+    # Checks for the presence of words and writes to the output file
+    if (word1 in dict) {
+        print "Palavra encontrada:", word1 >> output;
+    } else {
+        print "Palavra não encontrada no dicionário:", word1 >> output;
+    }
+    if (word2 in dict) {
+        print "Palavra encontrada:", word2 >> output;
+    } else {
+        print "Palavra não encontrada no dicionário:", word2 >> output;
+    }
+}
+' "$PAIRS_FILE"
+
+# Call the limit_files.sh script
+./limit_files.sh "$OUTPUT_FILE"
+
+echo "O Dicionário foi criado em $OUTPUT_FILE"

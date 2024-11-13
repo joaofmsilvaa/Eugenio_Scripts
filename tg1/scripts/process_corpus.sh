@@ -6,7 +6,7 @@ OUTPUT_FILE="$OUTPUT_DIR/corpus_clean.txt"
 
 mkdir -p "$OUTPUT_DIR"
 
-# Remove the first field from each line
+#Remove the first field from each line
 awk '{$1=""; sub(/^[ \t]+/, ""); print}' "$INPUT_FILE" > "$OUTPUT_FILE"
 
 ./limit_files.sh $OUTPUT_FILE
