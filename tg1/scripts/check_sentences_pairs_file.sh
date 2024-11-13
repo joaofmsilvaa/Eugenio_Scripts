@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Caminhos para os arquivos
+# Paths to files
 SENTENCES_FILE="../sentences_dict/sentences.txt"
 PAIRS_FILE="../sentences_dict/sentences_pairs.txt"
 OUTPUT_FILE="../sentences_dict/sentences_pairs_check.txt"
 
-# Limpa o arquivo de saída
+# Clean the output file
 > "$OUTPUT_FILE"
 
-# Verifica se os arquivos existem
+# Check if files exist
 if [[ ! -f "$SENTENCES_FILE" ]]; then
     echo "Arquivo sentences.txt não encontrado!"
     exit 1
@@ -19,9 +19,9 @@ if [[ ! -f "$PAIRS_FILE" ]]; then
     exit 1
 fi
 
-# Cria o dicionário de frases a partir do sentences.txt usando awk
+# Creates the sentence dictionary from sentences.txt
 awk '
-    # Ao carregar o sentences.txt, cria um dicionário
+    # When loading sentences.txt, it creates a dictionary
     FNR==NR {
         #gsub(/^ +| +$/, "", $0);  # Remove espaços nas extremidades
         gsub(/\t[0-9]+$/, "", $0);
@@ -29,25 +29,25 @@ awk '
         dict[$0] = 1;
         next
  }
-    # Para cada linha do pairs.txt, processa as frases
+    # For each line of pairs.txt, process the sentences
     {
         match($0,/[.!?]/)
         sentence1 = substr($0, 1, RSTART);
         sentence2 = substr($0, RSTART +1);
         
         
-        # Substitui "|" por espaços para reconstruir as frases
+        # Replace "|" with spaces to reconstruct sentences
         gsub(/\|/, " ", sentence1);
         gsub(/\|/, " ", sentence2);
 
 
-        # Limpa espaços extras nas extremidades
+        # Cleans up extra spaces at the ends
         gsub(/^ +| +$/, "", sentence1);
         gsub(/^ +| +$/, "", sentence2);
         gsub(/\t[0-9]+$/, "",sentence2);
         
         
-        # Verifica se as frases estão no dicionário e escreve no arquivo de saída
+        # Checks if the sentences are in the dictionary and writes to the output file
         if (sentence1 in dict) {
             print "Frase encontrada: " sentence1 >> "'$OUTPUT_FILE'";
         } else {
@@ -62,7 +62,7 @@ awk '
     }
 ' "$SENTENCES_FILE" "$PAIRS_FILE"
 
-# Chama o script limit_files.sh
+# Call the limit_files.sh script
 ./limit_files.sh "$OUTPUT_FILE"
 
 echo "O Dicionário foi criado em $OUTPUT_FILE"
