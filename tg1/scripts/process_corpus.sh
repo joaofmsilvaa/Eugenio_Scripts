@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INPUT_FILE="../deu_mixed-typical_2011_300K-sentences.txt"
+INPUT_FILE="../corpus/deu_mixed-typical_2011_300K-sentences.txt"
 OUTPUT_DIR="../corpus_txt"
 OUTPUT_FILE="$OUTPUT_DIR/corpus_clean.txt"
 

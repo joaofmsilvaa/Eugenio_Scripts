@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CORPUS_FILE="../deu_mixed-typical_2011_300K-sentences.txt"
+CORPUS_FILE="../corpus/deu_mixed-typical_2011_300K-sentences.txt"
 OUTPUT_DIR="../words_dict"
 OUTPUT_FILE="$OUTPUT_DIR/words.txt"
 

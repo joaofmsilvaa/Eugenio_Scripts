@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILEPATH="../deu_mixed-typical_2011_300K-sentences.txt"
+FILEPATH="../corpus/deu_mixed-typical_2011_300K-sentences.txt"
 OUTPUT_FILE="../corpus_info/corpus_info.txt"
 
 echo "O dicionário de palavras vai ser criado em $OUTPUT_FILE"

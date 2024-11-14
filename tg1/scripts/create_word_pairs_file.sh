@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CORPUS_FILE="../deu_mixed-typical_2011_300K-sentences.txt"
+CORPUS_FILE="../corpus/deu_mixed-typical_2011_300K-sentences.txt"
 OUTPUT_FILE="../words_dict/words_pairs.txt"
 
 tr -c '[:alpha:]' '[\n*]' < "$CORPUS_FILE" |  # Replaces non-letter characters with newlines

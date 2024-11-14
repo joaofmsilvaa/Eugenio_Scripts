@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CORPUS_FILE="../deu_mixed-typical_2011_300K-sentences.txt"              
+CORPUS_FILE="../corpus/deu_mixed-typical_2011_300K-sentences.txt"              
 OUTPUT_FILE="../sentences_dict/sentences_pairs.txt"
 
 grep -oP '^\d+\t[^.!?]*[.!?]' "$CORPUS_FILE" | # Extracts phrases that start with a number and a tab

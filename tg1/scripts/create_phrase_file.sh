@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CORPUS_FILE="../deu_mixed-typical_2011_300K-sentences.txt"
+CORPUS_FILE="../corpus/deu_mixed-typical_2011_300K-sentences.txt"
 OUTPUT_FILE="../sentences_dict/sentences.txt"
 
 # Reads the full file, replaces the spaces with "|", prints the phrase,
