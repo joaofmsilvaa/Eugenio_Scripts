@@ -23,7 +23,7 @@ fi
 awk '
     # When loading sentences.txt, it creates a dictionary
     FNR==NR {
-        #gsub(/^ +| +$/, "", $0);  # Remove espaços nas extremidades
+        #gsub(/^ +| +$/, "", $0);  # Removes spaces at the ends
         gsub(/\t[0-9]+$/, "", $0);
         gsub(/\|/, " ", $0);
         dict[$0] = 1;
